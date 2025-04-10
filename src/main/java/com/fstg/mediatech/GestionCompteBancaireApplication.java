@@ -1,15 +1,9 @@
 package com.fstg.mediatech;
-
-import static com.fstg.mediatech.GestionCompteBancaireApplication.comptes;
-
 import java.util.ArrayList;
 import java.util.List;
-
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-
 import com.fstg.mediatech.entities.Compte;
-
 
 @SpringBootApplication
 public class GestionCompteBancaireApplication {

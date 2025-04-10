@@ -31,16 +31,13 @@ public class BanqueController {
 			c.setId(id);
 	     comptes.add(c);
 	     
-		 return "redirect:comptes";
-	    }
+		 return "redirect:comptes"; }
 		
 		@GetMapping("details/{id}")
 		public String supprimer(@PathVariable("id") int id, Model model) {
 			for(Compte c : comptes) {
 				if(c.getId()==id) {
-				 model.addAttribute("compte",c)	;
-				}
-			}
+				 model.addAttribute("compte",c)	;	}}
 			
 			return "detailsCompte";}
 		
@@ -61,4 +58,8 @@ public class BanqueController {
 				if (c.getId() == id && montant_depot > 0) {
 					c.setSolde(c.getSolde()+montant_depot);
 				}}
-     		return"redirect:../../comptes"; } }
+     		return"redirect:../../comptes"; } 
+        @RequestMapping("/")
+        public String home() {
+          return "redirect:/index.html";  
+}}
