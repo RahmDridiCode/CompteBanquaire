@@ -1,7 +1,5 @@
 package com.fstg.mediatech.controllers;
 
-import static com.fstg.mediatech.GestionCompteBancaireApplication.comptes;
-
 import java.util.List;
 
 import org.springframework.stereotype.Controller;
