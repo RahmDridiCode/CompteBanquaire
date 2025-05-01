@@ -1,13 +1,19 @@
 package com.fstg.mediatech.entities;
 
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.Id;
+@Entity
 public class Compte {
-	private int id;
+	@Id
+	@GeneratedValue
+	private long id;
     private String titulaire;
     private double solde;
-	public int getId() {
+	public long getId() {
 		return id;
 	}
-	public void setId(int id) {
+	public void setId(long id) {
 		this.id = id;
 	}
 	public String getTitulaire() {
@@ -30,12 +36,7 @@ public class Compte {
 	public Compte() {
 		super();
 	}
-	public Compte(int id, String titulaire, double solde) {
-		super();
-		this.id = id;
-		this.titulaire = titulaire;
-		this.solde = solde;
-	}
+	
 
 
 }

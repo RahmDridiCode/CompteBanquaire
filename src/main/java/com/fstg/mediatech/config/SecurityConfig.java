@@ -10,18 +10,19 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.core.userdetails.User;
 
 @Configuration
-@EnableWebSecurity(debug=true)
+@EnableWebSecurity
 public class SecurityConfig  {
 	@Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
             .authorizeHttpRequests(auth -> auth
-                .requestMatchers("/","/index.html","/login", "/css/**").permitAll()
-                .anyRequest().authenticated()
+            		.requestMatchers("/login", "/css/**").permitAll()
+            		.anyRequest().authenticated()
+
             )
             .formLogin(form -> form
                 .loginPage("/login")
-                .defaultSuccessUrl("/", true)
+                .defaultSuccessUrl("/comptes", true)
                 .permitAll()
             )
             .logout(logout -> logout.permitAll());
@@ -34,7 +35,6 @@ public class SecurityConfig  {
         UserDetails user = User.withDefaultPasswordEncoder()
             .username("user")
             .password("password")
-            .roles("USER")
             .build();
         return new InMemoryUserDetailsManager(user);
     }

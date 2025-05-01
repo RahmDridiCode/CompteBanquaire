@@ -1,29 +1,37 @@
+<nav th:fragment="navbar" class="navbar navbar-expand-lg navbar-dark bg-dark">
+	<div class="container-fluid">
+		<a class="navbar-brand" href="/">Gestion Comptes</a>
+		<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+			aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+			<span class="navbar-toggler-icon"></span>
+		</button>
+		<div class="collapse navbar-collapse" id="navbarNav">
+			<ul class="navbar-nav ms-auto">
+				<li class="nav-item">
+					<a class="nav-link" href="/ajouter">
+						<i class="bi bi-plus-circle"></i> Ajouter un compte
+					</a>
+				</li>
+				<li class="nav-item">
+					<a class="nav-link" href="/comptes">
+						<i class="bi bi-list-ul"></i> Liste des comptes
+					</a>
+				</li>
+				<li class="nav-item d-flex align-items-center">
+				    <form th:action="@{/logout}" method="post" style="margin: 0;">
+				        <button type="submit"
+				                class="nav-link logout-btn"
+				                style="background: none; border: none; padding-left: 8px; padding-right: 0; padding-top: 0; padding-bottom: 0; color: gray; font-size: 1rem; position: relative; top: 2px;"
+				                title="Se déconnecter">
+				            <i class="fas fa-sign-out-alt"></i>
+				        </button>
+				    </form>
+				</li>
 
-	<nav th:fragment="navbar" class="navbar navbar-expand-lg navbar-dark bg-dark bg-gradient shadow-sm">
-	  <div class="container-fluid">
-	    <a class="navbar-brand fw-bold" href="/">Gestion Comptes</a>
-	    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
-	      aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-	      <span class="navbar-toggler-icon"></span>
-	    </button>
-	    <div class="collapse navbar-collapse" id="navbarNav">
-	      <ul class="navbar-nav ms-auto">
-	        <li class="nav-item">
-	          <a class="nav-link text-white" href="/ajouter">
-	            <i class="bi bi-plus-circle"></i> Ajouter un compte
-	          </a>
-	        </li>
-	        <li class="nav-item">
-	          <a class="nav-link text-white" href="/comptes">
-	            <i class="bi bi-list-ul"></i> Liste des comptes
-	          </a>
-	        </li>
-			<li class="nav-item">
-				<form th:action="@{/logout}" method="post">
-				    <button type="submit" class="btn btn-danger">Logout</button>
-				</form>
-			</li>
-	      </ul>
-	    </div>
-	  </div>
-	</nav>
+
+
+
+			</ul>
+		</div>
+	</div>
+</nav>
