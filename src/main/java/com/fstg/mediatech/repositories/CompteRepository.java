@@ -1,4 +1,4 @@
-package com.fstg.mediatech.Repositories;
+package com.fstg.mediatech.repositories;
 
 
 import org.springframework.data.jpa.repository.JpaRepository;
