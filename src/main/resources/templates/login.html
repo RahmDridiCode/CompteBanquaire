@@ -17,12 +17,12 @@
 				<h4 class="card-title text-center mb-4">Login</h4>
 				<!-- Optional error message -->
 				<div th:if="${param.error}" class="alert alert-danger py-2">
-					Invalid username or password
+					Invalid email or password
 				</div>
 				<form th:action="@{/login}" method="post">
 					<div class="mb-3">
-						<label for="username" class="form-label">Username</label>
-						<input type="text" name="username" id="username" class="form-control" required autofocus>
+						<label for="username" class="form-label">Email</label>
+						<input type="email" name="username" id="username" class="form-control" required autofocus>
 					</div>
 
 					<div class="mb-3">
@@ -38,6 +38,10 @@
 					<div class="text-center mt-3">
 						<span>Don't have an account?</span>
 						<a th:href="@{/signup}">Sign up here</a>
+					</div>
+					<div class="text-center mt-3">
+						<span>Forgot Password?</span>
+						<a th:href="@{/forgot-password}">Reset Password</a>
 					</div>
 				</form>
 

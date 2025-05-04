@@ -14,7 +14,7 @@ public class EmailService {
 
     public void sendPasswordResetEmail(String to, String token) {
         String subject = "Reset Your Password";
-        String resetUrl = "http://localhost:8080/reset-password?token=" + token;
+        String resetUrl = "http://localhost:8081/reset-password?token=" + token;
 
         String body = """
                 Hello,

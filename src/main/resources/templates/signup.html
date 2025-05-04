@@ -16,15 +16,15 @@
 
             <h4 class="card-title text-center mb-4">Create Account</h4>
 
-            <form th:action="@{/register}" th:object="${registrationForm}" method="post">
+            <form th:action="@{/register}" th:object="${user}" method="post">
                 <div class="mb-3">
-                    <label for="username" class="form-label">Username</label>
-                    <input type="text" th:field="*{username}" id="username" class="form-control" required>
+                    <label for="name" class="form-label">name</label>
+                    <input type="text" th:field="*{name}" id="name" class="form-control" required>
                 </div>
 
                 <div class="mb-3">
-                    <label for="email" class="form-label">Email</label>
-                    <input type="email" th:field="*{email}" id="email" class="form-control" required>
+                    <label for="username" class="form-label">Email</label>
+                    <input type="email" th:field="*{username}" id="username" class="form-control" required>
                 </div>
 
                 <div class="mb-3">

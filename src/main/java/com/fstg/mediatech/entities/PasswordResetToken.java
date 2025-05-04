@@ -1,31 +1,29 @@
 package com.fstg.mediatech.entities;
 
-
-import jakarta.persistence.ElementCollection;
 import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToOne;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.HashSet;
-import java.util.Set;
+import java.time.LocalDateTime;
+
 @Entity
-@Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class User {
+@Data
+public class PasswordResetToken {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String name;
-    private String password;
-    private String username;
+    private String token;
 
-    @ElementCollection(fetch = FetchType.EAGER)
-    private Set<String> roles = new HashSet<>();
+    @OneToOne
+    private User user;
+
+    private LocalDateTime expiryDate;
 }
