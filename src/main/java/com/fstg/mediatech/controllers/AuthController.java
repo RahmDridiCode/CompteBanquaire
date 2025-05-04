@@ -6,6 +6,7 @@ import com.fstg.mediatech.repositories.PasswordResetTokenRepository;
 import com.fstg.mediatech.repositories.UserRepository;
 import com.fstg.mediatech.services.EmailService;
 import lombok.AllArgsConstructor;
+import org.apache.logging.log4j.util.Strings;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -13,8 +14,14 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.security.Principal;
 import java.time.LocalDateTime;
 import java.util.Optional;
 import java.util.Set;
@@ -26,10 +33,23 @@ public class AuthController {
 
 	private final UserRepository userRepository;
 
+
 	private final PasswordEncoder passwordEncoder;
 
 	private final PasswordResetTokenRepository passwordResetTokenRepository;
 	private final EmailService emailService;
+	private static final String uploadPath = "uploads/images/";
+
+
+	@ModelAttribute
+	public void addUserToModel(Model model, Principal principal) {
+		if (principal != null) {
+			Optional<User> optionalUser = userRepository.findByUsername(principal.getName());
+			if(optionalUser.isPresent()){
+				model.addAttribute("user", optionalUser.get());
+			}
+		}
+	}
 
 	@GetMapping("/signup")
 	public String showSignUpForm(Model model) {
@@ -52,7 +72,7 @@ public class AuthController {
 
 	@GetMapping("/forgot-password")
 	public String showForgotPasswordForm(Model model) {
-		model.addAttribute("email", "");
+		//model.addAttribute("email", "");
 		return "forgot-password";
 	}
 
@@ -78,7 +98,7 @@ public class AuthController {
 			model.addAttribute("message", "a reset link has been sent to your email.");
 
 		}else {
-			model.addAttribute("message", "Account not found!");
+			model.addAttribute("error", "Account not found!");
 		}
 
 		return "forgot-password";
@@ -86,9 +106,6 @@ public class AuthController {
 	@PostMapping("/reset-password")
 	public String handlePasswordReset(@RequestParam String token, @RequestParam String password, @RequestParam String confirmPassword, Model model) {
 		if (!password.equals(confirmPassword)) {
-
-
-
 			model.addAttribute("error", "Passwords do not match.");
 			model.addAttribute("token", token); // So the form keeps the token
 			return "reset-password";
@@ -101,15 +118,50 @@ public class AuthController {
 			userRepository.save(user);
 			passwordResetTokenRepository.delete(tokenOptional.get());
 
-			return "redirect:/login?resetSuccess";
+			return "redirect:/login";
 		}
-
-		return "redirect:/reset-password?token=" + token + "&error=invalid";
+		model.addAttribute("error", "token expired!");
+		model.addAttribute("token", token); // So the form keeps the token
+		return "reset-password";
 	}
+
 	@GetMapping("/reset-password")
 	public String showResetPasswordForm(@RequestParam String token, Model model) {
 		model.addAttribute("token", token);
 		return "reset-password";
+	}
+
+
+	@GetMapping("/profile/edit")
+	public String showEditForm(Model model, Principal principal) {
+		User user = userRepository.findByUsername(principal.getName()).get();
+		model.addAttribute("user", user);
+		return "edit-profile";
+	}
+
+	@PostMapping("/profile/edit")
+	public String updateProfile(@ModelAttribute User userForm,
+								Principal principal,
+								Model model) throws IOException {
+		User user = userRepository.findByUsername(principal.getName()).orElseThrow();
+
+		if(Strings.isNotBlank(userForm.getName()))
+			user.setName(userForm.getName());
+
+		if(Strings.isNotBlank(userForm.getUsername()))
+			user.setUsername(userForm.getUsername());
+
+		if (!userForm.getImage().isEmpty()) {
+			MultipartFile imageFile = userForm.getImage();
+			String fileName = UUID.randomUUID() + "_" + imageFile.getOriginalFilename();
+			Path filePath = Paths.get(uploadPath, fileName);
+			Files.copy(imageFile.getInputStream(), filePath);
+			user.setImagePath(fileName);
+		}
+
+		userRepository.save(user);
+		model.addAttribute("message", "Profile updated!");
+		return "edit-profile";
 	}
 	
 }

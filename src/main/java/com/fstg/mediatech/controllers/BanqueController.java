@@ -1,7 +1,12 @@
 package com.fstg.mediatech.controllers;
 
+import java.security.Principal;
 import java.util.List;
+import java.util.Optional;
 
+import com.fstg.mediatech.entities.User;
+import com.fstg.mediatech.repositories.UserRepository;
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -15,16 +20,20 @@ import com.fstg.mediatech.repositories.CompteRepository;
 import com.fstg.mediatech.entities.Compte;
 
 @Controller
+@AllArgsConstructor
 public class BanqueController {
 	
 	private final CompteRepository compteRepository;
+	private final UserRepository userRepository;
 	//@Autowired
-	public BanqueController(CompteRepository compteRepository)
-	{
-		this.compteRepository=compteRepository;
+	@ModelAttribute
+	public void addUserToModel(Model model, Principal principal) {
+		Optional<User> optionalUser = userRepository.findByUsername(principal.getName());
+			if(optionalUser.isPresent()){
+				model.addAttribute("user", optionalUser.get());
+			}
 	}
-	
-	
+
 	@RequestMapping("comptes")
 	public String afficher(Model model) {
 		List<Compte>comptes=compteRepository.findAll();
@@ -90,6 +99,6 @@ public class BanqueController {
 
 	@RequestMapping("/")
 	public String home() {
-		return "redirect:/index.html";
+		return "index";
 	}
 }
