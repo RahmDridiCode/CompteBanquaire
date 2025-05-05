@@ -12,7 +12,7 @@ public class EmailService {
         this.mailSender = mailSender;
     }
 
-    public void sendPasswordResetEmail(String to, String token) {
+    public void sendPasswordResetEmail(String username, String token) {
         String subject = "Reset Your Password";
         String resetUrl = "http://localhost:8081/reset-password?token=" + token;
 
@@ -31,7 +31,7 @@ public class EmailService {
                 """.formatted(resetUrl);
 
         SimpleMailMessage message = new SimpleMailMessage();
-        message.setTo(to);
+        message.setTo(username);
         message.setSubject(subject);
         message.setText(body);
 

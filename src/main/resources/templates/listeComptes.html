@@ -1,10 +1,4 @@
-<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymleaf.org">
-<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"
-	integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r"
-	crossorigin="anonymous"></script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js"
-	integrity="sha384-0pUGZvbkm6XF6gxjEnlmuGrJXVbNuzT9qBBavbLwCsOGabYfZo0T0to5eqruptLy"
-	crossorigin="anonymous"></script>
+
 
 <head>
 	<meta charset="utf-8">
@@ -27,6 +21,7 @@
 			<th>Solde</th>
 			<th>Ajouter</th>
 			<th>Details</th>
+			<th>Supprimer</th>
 
 		</thead>
 		<tbody>
@@ -36,6 +31,7 @@
 				<td th:text="${c.solde}"></td>
 				<td><a class="btn btn-success" th:href="@{/ajouter}">Ajouter</td>
 				<td><a class="btn btn-info" th:href="@{/details/{id}(id=${c.id})}">Details</td>
+					<td><a class="btn btn-danger" th:href="@{/supprimer/{id}(id=${c.id})}">Supprimer</td>
 			</tr>
 		</tbody>
 	</table>

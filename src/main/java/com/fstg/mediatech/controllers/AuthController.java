@@ -31,11 +31,9 @@ import java.util.UUID;
 public class AuthController {
 
 	private final UserRepository userRepository;
-
-
+	private final PasswordResetTokenRepository passwordResetTokenRepository;
 	private final PasswordEncoder passwordEncoder;
 
-	private final PasswordResetTokenRepository passwordResetTokenRepository;
 	private final EmailService emailService;
 	private static final String uploadPath = "uploads/images/";
 
