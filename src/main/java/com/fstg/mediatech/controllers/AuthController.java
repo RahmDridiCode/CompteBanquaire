@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -37,7 +38,6 @@ public class AuthController {
 	private final EmailService emailService;
 	
 	private static final String uploadPath = "uploads/images/";
-
 
 	@ModelAttribute
 	public void addUserToModel(Model model, Principal principal) {
@@ -75,32 +75,34 @@ public class AuthController {
 	}
 
 	@PostMapping("/forgot-password")
-	public String processForgotPassword(@RequestParam String email, Model model) {
-		Optional<User> userOptional = userRepository.findByUsername(email);
+	public String processForgotPassword(@RequestParam String email, RedirectAttributes redirectAttributes) {
+	    Optional<User> userOptional = userRepository.findByUsername(email);
 
-		if (userOptional.isPresent()) {
-			User user = userOptional.get();
+	    if (userOptional.isPresent()) {
+	        User user = userOptional.get();
 
-			// Generate token
-			String token = UUID.randomUUID().toString();
+	        // Generate token
+	        String token = UUID.randomUUID().toString();
 
-			// Create and save token
-			PasswordResetToken resetToken = new PasswordResetToken();
-			resetToken.setToken(token);
-			resetToken.setUser(user);
-			resetToken.setExpiryDate(LocalDateTime.now().plusMinutes(15));
-			passwordResetTokenRepository.save(resetToken);
+	        // Save reset token
+	        PasswordResetToken resetToken = new PasswordResetToken();
+	        resetToken.setToken(token);
+	        resetToken.setUser(user);
+	        resetToken.setExpiryDate(LocalDateTime.now().plusMinutes(15));
+	        passwordResetTokenRepository.save(resetToken);
 
-			// Send email
-			emailService.sendPasswordResetEmail(user.getUsername(), token);
-			model.addAttribute("message", "a reset link has been sent to your email.");
+	        // Send email
+	        emailService.sendPasswordResetEmail(user.getUsername(), token);
 
-		}else {
-			model.addAttribute("error", "Account not found!");
-		}
-
-		return "forgot-password";
+	        // Success message using RedirectAttributes
+	        redirectAttributes.addFlashAttribute("message", "A reset link has been sent to your email.");
+	        return "redirect:/forgot-password"; // Redirect to show the message
+	    } else {
+	        redirectAttributes.addFlashAttribute("error", "Account not found!");
+	        return "redirect:/forgot-password"; // Redirect to show the error
+	    }
 	}
+
 	@PostMapping("/reset-password")
 	public String handlePasswordReset(@RequestParam String token, @RequestParam String password, @RequestParam String confirmPassword, Model model) {
 		if (!password.equals(confirmPassword)) {
