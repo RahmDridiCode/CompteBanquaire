@@ -152,6 +152,14 @@ public class AuthController {
 			user.setUsername(userForm.getUsername());
 
 		if (!userForm.getImage().isEmpty()) {
+
+			if (Strings.isNotBlank(user.getImagePath())) {
+				Path oldImagePath = Paths.get(uploadPath, user.getImagePath());
+				if (Files.exists(oldImagePath)) {
+					Files.delete(oldImagePath);  // Delete the old image file
+				}
+			}
+
 			MultipartFile imageFile = userForm.getImage();
 			String fileName = UUID.randomUUID() + "_" + imageFile.getOriginalFilename();
 			Path filePath = Paths.get(uploadPath, fileName);
@@ -161,6 +169,7 @@ public class AuthController {
 
 		userRepository.save(user);
 		model.addAttribute("message", "Profile updated!");
+		model.addAttribute("user", user);
 		return "edit-profile";
 	}
 	
