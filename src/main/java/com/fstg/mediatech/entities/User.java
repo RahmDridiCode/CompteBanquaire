@@ -36,3 +36,4 @@ public class User {
     @Transient
     private MultipartFile image;
 }
+

@@ -61,7 +61,7 @@ public class BanqueController {
 	}
 
 	@GetMapping("/details/{id}")
-	public String supprimer(@PathVariable("id") long id, Model model) {
+	public String supprimer(@PathVariable("id") Long id, Model model) {
 		Compte compte= compteRepository.findById(id).get();
 
 		model.addAttribute("compte",compte);
@@ -70,7 +70,7 @@ public class BanqueController {
 	}
 
 	@PostMapping("/comptes/{id}/retrait")
-	public String retrait(@PathVariable("id") long id, @RequestParam("montant_retrait") double montantRetrait) {
+	public String retrait(@PathVariable("id") Long id, @RequestParam("montant_retrait") double montantRetrait) {
 
 		Optional<Compte> optionalCompte = compteRepository.findById(id); // Check if the account exists
 
@@ -88,11 +88,11 @@ public class BanqueController {
 
 
 	@PostMapping("/comptes/{id}/depot")
-	public String depot(@PathVariable("id") long id, @RequestParam("montant_depot") double montantDepot) {
+	public String depot(@PathVariable("id") Long id, @RequestParam("montant_depot") double montantDepot) {
 
 		Optional<Compte> optionalCompte = compteRepository.findById(id); // Check if the account exists
 
-	    if (optionalCompte.isPresent()) {
+	    if (optionalCompte.isPresent() &&  montantDepot > 0) {
 	        Compte compte = optionalCompte.get();
 
 			compte.setSolde(compte.getSolde() + montantDepot);
@@ -108,7 +108,7 @@ public class BanqueController {
 	}
 
 	@GetMapping("/supprimer/{id}")
-	public String supprimer(@PathVariable("id") long id) {
+	public String supprimer(@PathVariable("id") Long id) {
 		compteRepository.deleteById(id);
 		return "redirect:../comptes";
 		

@@ -33,8 +33,9 @@ public class AuthController {
 	private final UserRepository userRepository;
 	private final PasswordResetTokenRepository passwordResetTokenRepository;
 	private final PasswordEncoder passwordEncoder;
-
+	
 	private final EmailService emailService;
+	
 	private static final String uploadPath = "uploads/images/";
 
 
@@ -68,7 +69,7 @@ public class AuthController {
 	}
 
 	@GetMapping("/forgot-password")
-	public String showForgotPasswordForm(Model model) {
+	public String showForgotPasswordForm() {
 		//model.addAttribute("email", "");
 		return "forgot-password";
 	}
@@ -131,8 +132,8 @@ public class AuthController {
 
 	@GetMapping("/profile/edit")
 	public String showEditForm(Model model, Principal principal) {
-		User user = userRepository.findByUsername(principal.getName()).get();
-		model.addAttribute("user", user);
+		//User user = userRepository.findByUsername(principal.getName()).get();
+		//model.addAttribute("user", user);
 		return "edit-profile";
 	}
 
